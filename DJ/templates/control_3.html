@@ -1,0 +1,156 @@
+
+<!---Loading static Files-->
+{% load static %}
+<title>control_3</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<style>
+    @media only screen and (min-width: 50px){
+    *{
+      MARGIN:0PX;
+    }
+      #header{
+        margin:0px;
+        height:70px;
+        background-color:#23364B;
+        color:white;
+        text-align:center;
+        font-size:40px;
+    }
+    #combine{
+      margin:2% 5% 0% 5%;
+      padding-left:5%;
+      padding-right:5%;
+      
+    }
+    .stepbar{   
+        height:inherit;
+        width:100%;
+        clear:both;
+        margin-left:-0%;
+        padding-top:2%;
+        background-image: linear-gradient(to bottom, rgba(135, 192, 205, 0.514) 0%,rgba(135, 192, 205, 0.6) 100%), url("{% static 'firstpage/img/ea.jpg' %}");
+        background-repeat: no-repeat;
+        background-size:cover;
+        background-position: center center;
+        background-attachment: fixed;
+    }
+    #div2{
+        height:60%;
+        width:100%;
+        padding:1% 5% 0% 5%;
+        animation: 1s ease-out 0s 1 slideInFromLeft;
+        overflow-y:auto;
+        background:#f3f9fb;
+                
+    }
+    .progressbar {
+        counter-reset: step;
+        }
+        .progressbar li {
+        list-style: none;
+        display: inline-block; 
+        width: 19.00%;
+        position: relative;
+        text-align: center;
+        cursor: pointer;
+        }
+        .progressbar li:before {
+        content: counter(step);
+        counter-increment: step;
+        width: 40px;
+        height: 40px;
+        line-height : 40px;
+        border: 3px solid gray;
+        border-radius: 100%;
+        display: block;
+        text-align: center;
+        margin: 0 auto 10px auto;
+        background-color: #fff;
+        }
+        .progressbar li:after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: gray;
+            top: 20px;
+            left: -50%;
+            z-index : -1;
+        }
+        .progressbar li:first-child:after {
+                content: none; 
+        }
+        .progressbar li.active {
+            color: green;
+            }
+        .progressbar li.active:before {
+            border-color: green;
+        } 
+        .progressbar li.active + li:after {
+            background-color: green;
+        }
+        @keyframes slideInFromLeft {
+        0% {
+            transform: translateX(30%);
+        }
+        100% {
+            transform: translateX(0);
+        }
+        }
+        #submit{
+                background: #0066A2;
+                color: white;
+                border-style: outset;
+                border-color: #0066A2;
+                height: 40px;
+                width: 100px;
+                font: bold 16px arial, sans-serif;
+                text-shadow:none;
+                text-align:center;
+                margin-left:45%;
+            }
+
+    }
+</style>
+<!-- <script>
+    function noBack()
+        {
+        window.history.forward()
+  
+        }
+        noBack();
+        window.onload = noBack;
+        window.onpageshow = function(evt){ if(evt.persisted) noBack(); }
+        window.onunload = function(){ void(0); }
+  </script> -->
+<div id="page8_control_3">
+    <div id="header">Control</div>
+    <div id="combine">
+        <div class="container stepbar">
+            <ul class="progressbar">
+                    <li class="active">Business Activity</li>
+                    <li class="active">Regulations</li>
+                    <li class="active">Policy</li>
+                    <li>Control</li>
+                    <li>Risk</li>
+                    <li>Mapping</li>
+            </ul>
+        </div>
+        <div id="div2">
+            <div>{% load render_table from django_tables2 %}</div>
+                <div>
+                {% block content %}    
+                    {% render_table table %}
+                    {% if flag %}
+                    <a class="btn btn-primary" style="margin-left: 880px" href="selectrisk/" id="submit">Next</a>
+                    {% else %}
+                    <a class="btn btn-primary" style="margin-left: 880px" disabled id="submit">Next</a>
+                    {% endif %}
+    
+    
+                {% endblock %}
+            </div>
+        </div>
+
+    </div>
+</div>

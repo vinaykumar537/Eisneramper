@@ -1,0 +1,37 @@
+source,target,value
+Regulatory Registration?/Commodity Pool Operator/New York,§275.0-2 / General procedures for serving non-residents.,1
+Regulatory Registration?/Investment Advisor (Mid-sized)/New York,§275.0-6 / Incorporation by reference in applications.,1
+Regulatory Registration?/Commodity Pool Operator/New York,§275.203-2 / Withdrawal from investment adviser registration.,1
+Regulatory Registration?/Commodity Trading Advisor/New York,§275.203-2 / Withdrawal from investment adviser registration.,1
+Regulatory Registration?/Investment Advisor (Large)/New York,§275.203-2 / Withdrawal from investment adviser registration.,1
+Regulatory Registration?/Commodity Pool Operator/New York,§§275.203A-4—275.203A-6 / [Reserved],1
+Regulatory Registration?/Commodity Trading Advisor/New York,§§275.203A-4—275.203A-6 / [Reserved],1
+Regulatory Registration?/Investment Advisor (Large)/New York,§§275.203A-4—275.203A-6 / [Reserved],1
+Regulatory Registration?/Investment Company/New York,§275.204-5 / [Reserved],1
+Regulatory Registration?/Introducing Broker/New York,§275.204-5 / [Reserved],1
+Regulatory Registration?/Broker-Dealer/New York,§275.204-5 / [Reserved],1
+Regulatory Registration?/Self-Clearing Broker Dealer/New York,§275.204-5 / [Reserved],1
+Regulatory Registration?/Investment Company/New York,§275.206(4)-2 / Custody of funds or securities of clients by investment advisers.,1
+Regulatory Registration?/Introducing Broker/New York,§275.206(4)-2 / Custody of funds or securities of clients by investment advisers.,1
+Regulatory Registration?/Broker-Dealer/New York,§275.206(4)-2 / Custody of funds or securities of clients by investment advisers.,1
+Regulatory Registration?/Self-Clearing Broker Dealer/New York,§275.206(4)-2 / Custody of funds or securities of clients by investment advisers.,1
+§275.0-2 / General procedures for serving non-residents.,pkpk,1
+§275.0-6 / Incorporation by reference in applications.,sfdgsdf,1
+§275.203-2 / Withdrawal from investment adviser registration.,SDFGS,1
+§§275.203A-4—275.203A-6 / [Reserved],TREWT,1
+§275.204-5 / [Reserved],SYHGS,1
+§275.204-5 / [Reserved],DFSGS,1
+§275.206(4)-2 / Custody of funds or securities of clients by investment advisers.,SDFGS,1
+pkpk,jkljnlk,1
+sfdgsdf,sfdg,1
+SDFGS,VCSDFG,1
+TREWT,RET,1
+SYHGS,DFSG,1
+DFSGS,GDFSG,1
+SDFGS,GDFSG,1
+jkljnlk,Medium,1
+sfdg,High,1
+VCSDFG,High,1
+RET,Medium,1
+DFSG,High,1
+GDFSG,Medium,1

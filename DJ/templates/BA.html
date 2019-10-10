@@ -1,0 +1,314 @@
+<!---Loading static Files-->
+{% load static %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'Mapper/styles.css' %}" />
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<title>Business Definition</title>
+<style>
+  p label{
+    font-size:20px;
+    font-weight: bold;
+    }
+    select {
+    border: 1px solid black;
+  }
+  ul ul{
+    list-style-type:circle;
+  
+    }
+    
+  #id_Business_Activities_0,#id_Business_Activities_1,#id_Business_Activities_2,#id_Business_Activities_3,#id_Business_Activities_4,#id_Business_Activities_5,#id_Business_Activities_6,
+  #id_Business_Activities_7,#id_Business_Activities_8,#id_Business_Activities_9,#id_Business_Activities_10,#id_Business_Activities_11,#id_Business_Activities_12,#id_Business_Activities_13,#id_Business_Activities_14,#id_Business_Activities_15,#id_Business_Activities_16,#id_Business_Activities_17
+  {
+    padding-left:10%;
+  }
+  .network-modal, .table-model{
+       width:300% !important;
+       margin-left:-100% !important;
+     }
+     .view-groups{
+      width:150% !important;
+       margin-left:-30% !important;
+     }
+  </style>
+         
+         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+         
+  <script>
+        function enableGroup(checkgroup) {
+          var textbox = document.getElementById("textbox");
+          textbox.disabled = checkgroup.checked ? false : true;
+          if (!textbox.disabled) {
+            textbox.focus();
+            textbox.setAttribute('required','required');
+            textbox.setAttribute('autocomplete','off');
+          }
+      }
+  
+  </script>
+<body> 
+  </button>
+<div id="page2">
+    <div id="header">
+        <li style="display: inline-block;font-size:22px">Business Management</li>
+         <div style="float:right;margin-right:20px">
+            <button type="button" data-toggle="modal" class="btn" data-target="#myModal1" style="font-size:18px;text-align:center;background-color:transparent;cursor: pointer;color:white;float:left;margin-right:100px">View Groups</button>
+            <button type="button" data-toggle="modal" class="btn" data-target="#myModal2" style="font-size:18px;text-align:center;background-color:transparent;cursor: pointer;color:white;float:left;margin-right:100px">View Existing Mapping</button>
+          <button type="button" data-toggle="modal" class="btn" data-target="#myModal" style="font-size:18px;text-align:center;background-color:transparent;cursor: pointer;color:white;float:left;margin-right:100px">Show Network Graph</button>
+          <ul style="float:right">
+              <li style="display: inline-block;font-size:18px">welcome,{{user}}</li>
+              <li style="display: inline-block;font-size:18px"> <a href="{% url 'logout' %}" style="color:white;text-decoration: none">Logout </a></li>
+          </ul>
+      </div> 
+       
+    </div>
+    <div id="combine">  
+      <div class="container stepbar" width="500px">
+          <ul class="progressbar">
+            <li>Business Activity</li>
+            <li>Regulations</li>
+            <li>Policy</li>
+            <li>Control</li>
+            <li>Risk</li>
+            <li>Mapping</li>
+          </ul>
+      </div>
+      <div id="div2">
+          {% load crispy_forms_tags %}
+              {% block container %}
+                       <!-- Button trigger modal Graph-->
+                       <div class="container">                        
+                          <!-- Modal -->
+                          <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog">
+                            
+                              <!-- Modal content-->
+                              <div class="modal-content network-model ">
+                                <div class="modal-header">
+                                    <b><i>NETWORK GRAPH REPRESENTATION</i></b> 
+
+                                    <span style="float:right">
+                                        <p style="float:left;"><i >USER : {{user}} </i></p>&nbsp;&nbsp;
+                                        <button type="button" class="close btn-default" data-dismiss="modal" style="color:white;background-color:red;">&times;</button>
+                                    </span>
+                                   
+                                  
+                                </div>
+                                <!--Main Content For MOdal Body in the pop up-->
+                                <div class="modal-body2">
+                                    <div id="left_panel_legend"></div>
+                                  <script src="https://d3js.org/d3.v3.js"></script>
+                                  <script>
+                                      $(function()
+                                          {
+                                              $('.modal-body2').ready(function() {
+                                                  $.get("/networkgraph/", function(data){$(".modal-body2").html(data);})
+                                              })    
+                                          });
+                                  
+                                  </script>
+                                </div>
+                              </div>  
+                            </div>
+                          </div> 
+                          <div class="modal fade" id="myModal2" role="dialog">
+                              <div class="modal-dialog">
+                              
+                                <!-- Modal content-->
+                                <div class="modal-content table-model">
+                                  <div class="modal-header">
+                                      <b><i>EXISTING MAPPING DETAILS</i></b>
+                                      <i>USER : {{user}}</i>
+                                  </div>
+                                  <div class="modal-body3">
+                                    <!-- <p>Some text in the modal.</p> -->
+                                    <script src="https://d3js.org/d3.v3.js"></script>
+                                    <script>
+                                     
+                                        $(function()
+                                            {                                        
+                                                $('.modal-body3').ready(function() {
+                                                    $.get("/viewfinalmapping/", function(data){$(".modal-body3").html(data);})
+                                                })
+                                                
+                                                });
+                                    
+                                    </script>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                  </div>
+                                </div>
+                                
+                              </div>
+                              
+                            </div>
+                            <div class="modal fade" id="myModal1" role="dialog">
+                              <div class="modal-dialog">
+                              
+                                <!-- Modal content-->
+                                <div class="modal-content view-groups">
+                                  <div class="modal-header">
+                                         <b><i>GROUPING DETAILS</i></b>
+                                         <i>USER : {{user}}</i>
+                                  </div>
+                                  <div class="modal-body1">
+                                    <!-- <p>Some text in the modal.</p> -->
+                                    <script src="https://d3js.org/d3.v3.js"></script>
+                                    <script>
+                                     
+                                        $(function()
+                                            {                                        
+                                                $('.modal-body1').ready(function() {
+                                                    $.get("/viewusergroups/", function(data){$(".modal-body1").html(data);})
+                                                })
+                                                
+                                                });
+                                    
+                                    </script>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                  </div>
+                                </div>
+                                
+                              </div>
+                              
+                            </div>
+                        </div>
+
+                       <!-- Button trigger modal Descriptions-->
+
+                       <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog cascading-modal" role="document">
+                          <!--Content-->
+                          <div class="modal-content">
+                      
+                            <!--Modal cascading tabs-->
+                            <div class="modal-c-tabs">
+                                <!-- Business Activities -->
+                              <!-- Nav tabs -->
+                              <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
+                                <li class="nav-item" >
+                                  <a class="nav-link" data-toggle="tab" href="#panel8" role="tab" >
+                                      Business Activities </a>
+                                </li>
+                              </ul>
+                      
+                              <!-- Tab panels -->
+                              <div class="tab-content">
+                                <!--Panel 7-->
+                                <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
+                      
+                                  <!--Body-->
+                                  <div class="modal-body mb-1">
+                                      <input id="myInput2" type="text" placeholder="Search.." class="search" >
+                                      <div class="accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+                                          {% for item in items %}
+                                          <!-- Accordion card -->
+                                          <div class="card">
+                                              
+                                            <!-- Card header -->
+                                            <div class="card-header" role="tab" id="#c{{forloop.counter}}">
+                                              <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#accordionEx1_{{forloop.counter}}"
+                                                aria-expanded="false" aria-controls="accordionEx1_{{forloop.counter}}">
+                                                <h6 class="mb-0">
+                                                 {{item.businessdefinition_a}} <i class="fas fa-angle-down rotate-icon"></i>
+                                                </h6>
+                                              </a>
+                                            </div>
+                                        
+                                            <!-- Card body -->
+                                            <div id="accordionEx1_{{forloop.counter}}" class="collapse" role="tabpanel" aria-labelledby="#accordionEx1_{{forloop.counter}}"
+                                              data-parent="#accordionEx1">
+                                              <div class="card-body">
+                                                 {{item.businessdefinition}}
+                                              </div>
+                                            </div>
+                                        
+                                          </div>
+                                        
+                                          {% endfor %}
+                   
+                                        </div>
+                              
+                    
+                                  </div>
+                                 
+                                </div>
+                                <!--/.Panel 7-->
+                      
+                            </div>
+                          </div>
+                          <!--/.Content-->
+                        </div>
+                      </div>
+                      <!--Modal: Login / Register Form-->
+                      
+                      
+                    </div>
+            <!--Modal: Login / Register Form-->
+                          <form method='post' name="businessForm" >
+                          {% csrf_token %}
+                          {% if messages %}
+            <ul>
+               {% for message in messages %}
+                 <li style="color: red">{{ message }}</li>
+               {% endfor %}
+            </ul>
+            {% endif %}
+                          <div id="predefined_ba">
+                            {{ form.as_p }}
+                            <div>
+                             
+                            </div><br>
+                            <!-- <input type='submit' id="submit" class="btn btn-primary" value='Submit'>
+                            <button type="button" id="submit" class="btn btn-primary desc" data-toggle="modal" data-target="#exampleModalLong">
+                                View Descriptions
+                              </button> -->
+                          </div>
+                       
+                      
+      </div>
+      <div id="noscroll">
+        <p style="color:crimson">To apply common mapping to all selected Ba's, please check "Group All"</p>
+        <input type="checkbox" name="groupall" id="checkgroup" value="yes" onclick="enableGroup(this);">Group All &nbsp;
+        <input type="text" name="groupname" id="textbox" disabled="disabled" placeholder="Enter Group Name" style=" border: 1px solid black;border-radius: 4px;" ><br>
+        <input type='submit' id="submit" class="btn btn-primary" value='Submit'>
+          <button type="button" id="submit" class="btn btn-info desc" data-toggle="modal" data-target="#exampleModalLong">  View Descriptions
+        </button>
+        </form>
+                          
+        {% endblock %}
+        {% block custom_js %}
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script type="text/javascript">
+        $(document).ready(function(){
+          $("#myInput2").on("keypress click input", function () {
+              var val = $(this).val();
+              if(val.length) {
+                  $(".accordion .card").hide().filter(function () {
+                      return $('.mb-0', this).text().toLowerCase().indexOf(val.toLowerCase()) > -1;
+                  }).show();
+              }
+              else {
+                  $(".accordion .card").show();
+              }
+          });
+  
+        });
+        </script>
+    {% endblock %}
+      </div>
+    </div>
+    </body>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+

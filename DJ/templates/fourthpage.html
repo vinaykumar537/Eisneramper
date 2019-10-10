@@ -1,0 +1,16 @@
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+{% load render_table from django_tables2 %}
+{% block content %}
+
+    
+    {% render_table table %}
+    {% if flag %}
+    <a class="btn btn-primary" style="margin-left: 880px" href="#">Create Mapping</a>
+    {% else %}
+    <a class="btn btn-primary" style="margin-left: 880px" href="#" disabled>Create Mapping</a>
+    {% endif %}
+
+{% endblock %}
+

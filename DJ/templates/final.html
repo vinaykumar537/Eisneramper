@@ -1,0 +1,8 @@
+<div >
+        {% load render_table from django_tables2 %}
+            {% block content %}
+            {% if table %}
+                {% render_table table %}
+                {% endif %}
+ {% endblock %}
+    </div>

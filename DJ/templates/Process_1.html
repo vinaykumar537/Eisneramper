@@ -1,0 +1,430 @@
+{% load static %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="{% static 'Mapper/styles.css' %}" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+
+<!----MOdaL CSS and JS-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    function resetMapping(){
+                     flag = confirm("Are you sure? Current saved mapping will be deleted, Mapping starts from begin")
+                     if(flag)
+                         location.href="{% url 'reset_mapping_bareg_group' %}";
+                     else
+                         location.reload();
+                 }
+
+</script>
+
+<title>Process</title>
+
+<style>
+    .modal-content{
+           width:300% !important;
+           margin-left:-100% !important;
+         }
+         .view-groups{
+      width:150% !important;
+       margin-left:-30% !important;
+     }
+     					
+	   .network-modal, .table-model{
+       width:300% !important;
+       margin-left:-100% !important;
+     }
+    </style>
+    
+<!-- Loading Styles For step progress bar -->
+<body >
+<div id="page6">
+    <div id="header">
+        <li style="display: inline-block;font-size:22px">Policy Management</li>
+         <div style="float:right;margin-right:20px">
+                <button type="button" data-toggle="modal" class="btn" data-target="#myModal1" style="font-size:18px;text-align:center;background-color:transparent;cursor: pointer;color:white;float:left;margin-right:100px">View Groups</button>
+
+                <button type="button" data-toggle="modal" class="btn" data-target="#myModal2" style="font-size:18px;text-align:center;background-color:transparent;cursor: pointer;color:white;float:left;margin-right:100px">View Existing Mapping</button>
+                <button type="button" data-toggle="modal" class="btn" data-target="#myModal" style="font-size:18px;text-align:center;background-color:transparent;cursor: pointer;color:white;float:left;margin-right:100px">Show Network Graph</button>
+        <ul style="float:right">
+              <li style="display: inline-block;font-size:18px">Welcome,{{user}}</li>
+              <li style="display: inline-block;font-size:18px; text-decoration: none"> <a href="{% url 'logout' %}">Logout </a></li>
+          </ul>
+      </div> 
+       
+    </div>
+        <div id="combine">
+            <!-- step progress -->
+            <div class="container stepbar">
+                    <ul class="progressbar">
+                        <li class="active">Business Activity</li>
+                        <li>Regulations</li>
+                        <li>Policy</li>
+                        <li>Control</li>
+                        <li>Risk</li>
+                        <li>Mapping</li>
+                    </ul>
+            </div>
+            <div id="div2">
+      
+                    {% load render_table from django_tables2 %}
+                    {% load render_table from django_tables2 %}
+                    {% block content %}
+
+                        
+                        {% render_table table %}
+
+            
+            </div>
+            <a class="btn btn-danger reset" onclick="resetMapping()" style="color:white" >Reset Mapping</a> 
+            {% if flag %}
+            <a class="btn btn-primary" id="next" href="{% url 'selectcontrol' %}" >Next</a>
+            {% else %}
+            <a class="btn btn-primary" id="next"  disabled>Next</a>
+            {% endif %}
+         
+        {% endblock %}
+        </div>
+        <!-- Button trigger modal Graph-->
+        <div class="container">                        
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                  <div class="modal-dialog">
+                  
+                    <!-- Modal content-->
+                    <div class="modal-content network-model">
+                      <div class="modal-header">
+                            <b><i>NETWORK GRAPH REPRESENTATION</i></b> 
+                            <span style="float:right">
+                                    <p style="float:left;"><i >USER : {{user}} </i></p>&nbsp;&nbsp;
+                                    <button type="button" class="close btn-default" data-dismiss="modal" style="color:white;background-color:red;">&times;</button>
+                                </span>
+                      </div>
+                      <!--Main Content For MOdal Body in the pop up-->
+                      <div class="modal-body2">
+                          <div id="left_panel_legend"></div>
+                        <script src="https://d3js.org/d3.v3.js"></script>
+                        <script>
+                            $(function()
+                                {
+                                    $('.modal-body2').ready(function() {
+                                        $.get("/networkgraph/", function(data){$(".modal-body2").html(data);})
+                                    })    
+                                });
+                        
+                        </script>
+                      </div>
+                    </div>  
+                  </div>
+                </div> 
+                <div class="modal fade" id="myModal1" role="dialog">
+                        <div class="modal-dialog">
+                        
+                          <!-- Modal content-->
+                          <div class="modal-content view-groups">
+                            <div class="modal-header">
+                                   <b><i>GROUPING DETAILS</i></b>
+                                   <i>USER : {{user}}</i>
+                            </div>
+                            <div class="modal-body1">
+                              <!-- <p>Some text in the modal.</p> -->
+                              <script src="https://d3js.org/d3.v3.js"></script>
+                              <script>
+                               
+                                  $(function()
+                                      {                                        
+                                          $('.modal-body1').ready(function() {
+                                              $.get("/viewusergroups/", function(data){$(".modal-body1").html(data);})
+                                          })
+                                          
+                                          });
+                              
+                              </script>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                          
+                        </div>
+                        
+                      </div>
+                <div class="modal fade" id="myModal2" role="dialog">
+                        <div class="modal-dialog">
+                        
+                          <!-- Modal content-->
+                          <div class="modal-content table-model">
+                            <div class="modal-header">
+                                    <b><i>EXISTING MAPPING DETAILS</i></b>
+                                      <i>USER : {{user}}</i>
+                            </div>
+                            <div class="modal-body3">
+                              <!-- <p>Some text in the modal.</p> -->
+                              <script src="https://d3js.org/d3.v3.js"></script>
+                              <script>
+                               
+                                  $(function()
+                                      {                                        
+                                          $('.modal-body3').ready(function() {
+                                              $.get("/viewfinalmapping/", function(data){$(".modal-body3").html(data);})
+                                          })
+                                          
+                                          });
+                              
+                              </script>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div>
+              </div>
+        <div id="graph"  >
+            
+
+                <select id="group_individual">
+                    <option  disabled="disabled" selected >Select Option</option>
+                    <option value="group">Group</option>
+                    <option value="single">Individual</option>
+                </select>
+                <script>
+                    console.log(JSON.stringify({{group_data|safe}}))
+                    console.log(JSON.stringify({{single_data|safe}}))
+                $("#group_individual").change(function(){
+                  
+                    
+                    correspondingID = $(this).find(":selected").val()
+                    if(correspondingID=="group")
+                    {
+                        $("#selectNumber").empty();
+                        $("#selectNumber1").hide();
+                        // alert(correspondingID)
+                        var options = {{ groups|safe }};
+                        console.log(options)
+                        var myselect = $('<select>');
+                                myselect.append($('<option disabled="disabled" selected></option>').val('Select Option').html('Select Option'))
+                            $.each(options, function(index, key) {
+                                myselect.append( $('<option></option>').val(key).html(key) );
+                            });
+                            $('#selectNumber').append(myselect.html());
+                            $("#selectNumber").show();
+
+
+                            $("#selectNumber").change(function(){
+                                // $("#selectNumber").empty();
+                                var e = document.getElementById("selectNumber").value;
+                                // alert(e)
+                                // var e=$(this).find(":selected").val()
+                                // alert(e)
+                                    var i,data1,treeData=[];
+                                    var options2 = {{groups|safe}};
+                                    console.log(options2)
+                                        for (i = 0; i <options2.length; i++) { 
+                                            if(e==options2[i])
+                                            {
+                                                data1={{group_data|safe}}
+                                                console.log(data1)
+                                                treeData=[$.parseJSON(data1[i])]
+                            
+                                            }
+                                    
+                                        }
+                                        console.log(JSON.stringify(treeData))
+                                graphData(treeData);
+                    });
+                    }
+                    else{
+                        $("#selectNumber1").empty();
+                        $("#selectNumber").hide();
+                        var options = {{ individuals|safe }};
+                        console.log(options)
+                        var myselect = $('<select>');
+                            myselect.append($('<option  disabled="disabled" selected ></option>').val('Select Option').html('Select Option'))
+                            $.each(options, function(index, key) {
+                                myselect.append( $('<option></option>').val(key).html(key) );
+                            });
+                            $('#selectNumber1').append(myselect.html());
+                            $("#selectNumber1").show();
+                            $("#selectNumber1").change(function(){
+                                // $("#selectNumber").empty();
+                                var e = document.getElementById("selectNumber1").value;
+                                // alert(e)
+                                // var e=$(this).find(":selected").val()
+                                    var i,data1,treeData=[];
+                                    var options1 = {{individuals|safe}};
+                                        for (i = 0; i <options1.length; i++) { 
+                                            if(e==options1[i])
+                                            {
+                                                data1={{single_data|safe}}
+                                                treeData=[$.parseJSON(data1[i])]
+                            
+                                            }
+                                    
+                                        }
+                                        // alert(treeData)
+                                    console.log(JSON.stringify(treeData))
+                                graphData(treeData);
+                    });
+                    }
+                        });
+                
+                </script>
+                <select id="selectNumber"   style="display:none">
+                 
+                </select>
+                <select id="selectNumber1"   style="display:none">
+                 
+                    </select>
+    
+                <div id="c1" ></div>
+                <script src="http://d3js.org/d3.v3.min.js"></script>
+                <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+                <script>
+               function graphData(treeData1)
+               {
+                   console.log(JSON.stringify(treeData1))
+                // alert($(this).find(":selected").val())
+                //    alert("hry")
+                var margin = {top:50, right: 200, bottom:0, left: 350},
+                        width = 1490 - margin.right - margin.left,
+                        height = 500 - margin.top - margin.bottom;
+                d3.select("#c1> *").remove();   
+                // var e = document.getElementById("selectNumber").value;
+                // alert(e)
+                // var i,data1,treeData=[];
+                // var options = {{individuals|safe}};
+                //     for (i = 0; i <options.length; i++) { 
+                //          if(e==options[i])
+                //          {
+                //             data1={{data|safe}}
+                //             treeData=[$.parseJSON(data1[i])]
+                            
+                //             break;    
+                //          }
+                                    
+                //     }
+    
+                // ************** Generate the tree diagram  *****************
+                var treeData=[]
+                treeData=treeData1
+                console.log(treeData[0])
+                var i = 0;
+              
+                var tree = d3.layout.tree()
+                 .size([height, width]);
+                
+                var diagonal = d3.svg.diagonal()
+                 .projection(function(d) { return [d.y, d.x]; });
+                
+                var svg = d3.select("#c1").append("svg")
+                .attr("width", width + margin.right + margin.left)
+                 .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                
+                root = treeData[0];
+                console.log("rootttt")
+                console.log(root)
+                var color = d3.scale.category20();  
+                update(root);
+                
+                function update(source) {
+                
+                  // Compute the new tree layout.
+                  var nodes = tree.nodes(root).reverse(),
+                   links = tree.links(nodes);
+                
+                  // Normalize for fixed-depth.
+                  nodes.forEach(function(d) { d.y = d.depth * 180; });
+                
+                  // Declare the nodesâ€¦
+                  var node = svg.selectAll("g.node")
+                   .data(nodes, function(d) { return d.id || (d.id = ++i); });
+                   
+                
+                  // Enter the nodes.
+                  var nodeEnter = node.enter().append("g")
+                   .attr("class", "node")
+                   .attr("transform", function(d) { 
+                    return "translate(" + d.y + "," + d.x + ")"; });
+                
+                  nodeEnter.append("circle")
+                   .attr("r", 10)
+                   .style("fill", function(d) { return d.level; });
+
+              
+                   nodeEnter.append("text")
+            //    .attr("x", function(d) { 
+            //     return d.children || d._children ? -13 : 13; })
+               .attr("dy", ".35em")
+               .attr("text-anchor", function(d) { 
+                return d.children || d._children ? "end" : "start"; })
+               .text(function(d) { return d.name; }).attr("y",-20).attr("x",0)
+               .style("fill-opacity", 1)
+               .call(wrap, 400);
+          
+          //    .attr("transform", "rotate(-19)")
+      
+             function wrap(text, width) {
+                  text.each(function () {
+                      var text = d3.select(this),
+                          words = text.text().split(/\s+/).reverse(),
+                          word,
+                          line = [],
+                          lineNumber = 0,
+                          lineHeight = 1.1, // ems
+                          x = text.attr("x"),
+                          y = text.attr("y"),
+                          dy = 0, //parseFloat(text.attr("dy")),
+                          tspan = text.text(null)
+                                      .append("tspan")
+                                      .attr("x", x)
+                                      .attr("y", y)
+                                      .attr("dy", dy + "em");
+                      while (word = words.pop()) {
+                          line.push(word);
+                          tspan.text(line.join(" "));
+                          if (tspan.node().getComputedTextLength() > width) {
+                              line.pop();
+                              tspan.text(line.join(" "));
+                              line = [word];
+                              tspan = text.append("tspan")
+                                          .attr("x", x)
+                                          .attr("y", y)
+                                          .attr("dy", ++lineNumber * lineHeight + dy + "em")
+                                          .text(word);
+                          }
+                      }
+                  });
+              }
+                  // Declare the linksâ€¦
+                  var link = svg.selectAll("path.link")
+                   .data(links, function(d) { return d.target.id; });
+                
+                  // Enter the links.
+                  link.enter().insert("path", "g")
+                   .attr("class", "link")
+                   .attr("d", diagonal);
+                   
+                }
+         
+               }  
+                </script>
+                 
+            
+            </div>
+        </div>
+    
+    
+        
+
+</div>
+</body>

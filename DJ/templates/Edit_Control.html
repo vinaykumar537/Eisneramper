@@ -1,0 +1,94 @@
+ <!---Loading static Files-->
+ {% load static %}
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+ <link rel="stylesheet" href="{% static 'Mapper/styles.css' %}" />
+ <style>
+ .network-modal, .table-model{
+       width:300% !important;
+       margin-left:-100% !important;
+     }
+     .view-groups{
+      width:150% !important;
+       margin-left:-30% !important;
+     }
+     }
+ </style>
+ <title>Edit_Control</title>
+ 
+ <div id="header">
+    <li style="display: inline-block;font-size:22px">Control Management</li>
+     <div style="float:right;margin-right:20px">
+        <button type="button" data-toggle="modal" class="btn" data-target="#myModal1" style="font-size:18px;text-align:center;background-color:transparent;cursor: pointer;color:white;float:left;margin-right:100px">View Groups</button>
+
+                <button type="button" data-toggle="modal" class="btn" data-target="#myModal2" style="font-size:18px;text-align:center;background-color:transparent;cursor: pointer;color:white;float:left;margin-right:100px">View Existing Mapping</button>
+                <button type="button" data-toggle="modal" class="btn" data-target="#myModal" style="font-size:18px;text-align:center;background-color:transparent;cursor: pointer;color:white;float:left;margin-right:100px">Show Network Graph</button>
+        <ul style="float:right">
+          <li style="display: inline-block;font-size:18px">Welcome,{{user}}</li>
+          <li style="display: inline-block;font-size:18px; text-decoration: none"> <a href="{% url 'logout' %}">Logout </a></li>
+      </ul>
+  </div> 
+   
+</div>
+
+
+          {% load crispy_forms_tags %}
+
+          {% block container %}
+    
+          <form class="form-horizontal" method="POST">
+              {% csrf_token %}
+          {{ formset.management_form }}
+          {% for form in formset %}
+          <div class="row form-row spacer">
+              <div class="top">
+                    <div class="col-2">
+                            <label>Control Title</label>
+                        </div>
+                        <div class="col-4">
+                            <div class="input-group">
+                                {{form.control}}
+                            </div>
+                        </div>
+              </div>
+              <div class="middle">
+                    <div class="col-2">
+                            <label>Control Description</label>
+                        </div>
+                        <div class="col-4">
+                            <div class="input-group">
+                                {{form.description}}
+                            </div>
+                        </div>
+                </div>
+                <div class="bottom">
+                        <div class="col-2">
+                                <label>Control Content</label>
+                            </div>
+                            <div class="col-4">
+                                <div class="input-group">
+                                    {{form.content}}
+                                  
+                                </div>
+                            </div>
+                    </div>
+               
+
+                    <!-- <div class="col4 offset-2">
+                            <button type="submit" id="update" class="btn btn-primary">Update</button>
+                            <a class="btn btn-danger"   style="background-color:#C9302C" id="cancel_btn" href="{% url 'selectrisk' %}" >Cancel</a>
+  
+                      </div> -->
+                      <div class="bottom col4" >
+                            <button type="submit" id="update" class="btn btn-primary">Update</button>  
+                        <a class="btn btn-danger" style="background-color:#C9302C" id="cancel_btn" href="{% url 'selectrisk' %}" >Cancel</a> 
+
+                       </div>
+             
+          </div>
+          {% endfor %}
+          </form>
+          {% endblock %}
+
+          
+        

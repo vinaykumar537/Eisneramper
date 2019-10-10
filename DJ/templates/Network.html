@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script src="https://d3js.org/d3.v3.js"></script>
+<style>
+ 
+path.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 2.5px;
+}
+ 
+path.link.twofive {
+  opacity: 0.25;
+}
+ 
+path.link.fivezero {
+  opacity: 0.50;
+}
+ 
+path.link.sevenfive {
+  opacity: 0.75;
+}
+ 
+path.link.onezerozero {
+  opacity: 1.0;
+}
+ 
+circle {
+  fill: #ccc;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+ 
+text {
+  fill: #000;
+  font: 10px sans-serif;
+  pointer-events: none;
+}
+
+
+</style>
+<body>
+    <!-- <div id="main"> -->
+        
+        <div id="graph">
+        </div>
+    <!-- </div> -->
+    
+<script>
+ 
+
+ links={{data|safe}}
+ console.log(links)
+// get the data
+// d3.csv("../static/output.csv", function(error, links) {
+    // console.log(links)
+var nodes = {};
+ var color=[];
+ var da=[]
+// Compute the distinct nodes from the links.
+links.forEach(function(link) {
+    link.source = nodes[link.source] || 
+        (nodes[link.source] = {name: link.source});
+    link.target = nodes[link.target] || 
+        (nodes[link.target] = {name: link.target});
+
+ 
+    link.value = +link.value;
+
+      color.push("black")
+});
+
+var width = 1500,
+    height = 700;
+    // color = d3.scale.category20c();
+
+ 
+var force = d3.layout.force()
+    .nodes(d3.values(nodes))
+    .links(links)
+    .size([width-500, height-10])
+    .linkDistance(60)
+    .charge(-300)
+    .on("tick", tick)
+    .start();
+ 
+// Set the range
+var  v = d3.scale.linear().range([0, 100]);
+ 
+// Scale the range of the data
+v.domain([0, d3.max(links, function(d) { return d.value; })]);
+ 
+// asign a type per value to encode opacity
+links.forEach(function(link) {
+	if (v(link.value) <= 25) {
+		link.type = "twofive";
+	} else if (v(link.value) <= 50 && v(link.value) > 25) {
+		link.type = "fivezero";
+	} else if (v(link.value) <= 75 && v(link.value) > 50) {
+		link.type = "sevenfive";
+	} else if (v(link.value) <= 100 && v(link.value) > 75) {
+		link.type = "onezerozero";
+	}
+});
+// d3.selectAll(".modal-body > *").remove()
+var svg = d3.select(".modal-body2").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+ 
+// build the arrow.
+svg.append("svg:defs").selectAll("marker")
+    .data(["end"])      // Different link/path types can be defined here
+    .enter().append("svg:marker")    // This section adds in the arrows
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 15)
+    .attr("refY", -1.5)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+  .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");
+ 
+// add the links and the arrows
+var path = svg.append("svg:g").selectAll("path")
+    .data(force.links())
+  .enter().append("svg:path")
+    .attr("class", function(d) { return "link " + d.type; })
+    .attr("marker-end", "url(#end)");
+ 
+// define the nodes
+var node = svg.selectAll(".node")
+    .data(force.nodes())
+  .enter().append("g")
+    .attr("class", "node")
+    .on("click", click)
+    .on("dblclick", dblclick)
+    .call(force.drag);
+ console.log(color)
+
+
+
+var business={{balist |safe}};
+var reg={{reglist |safe}};
+var proc={{process |safe}};
+var con={{control |safe}};
+var risk={{risk |safe}};
+node.append("circle")
+    .attr("r", 10)
+    .style("fill", function(d){if(business.includes(d.name)) return "red";
+                            else if(reg.includes(d.name)) return "green";
+                            else if(proc.includes(d.name)) return "orange";
+                            else if(con.includes(d.name)) return "blue";else if(risk.includes(d.name)) return "violet"});
+   
+
+ 
+// add the text 
+node.append("text")
+    .attr("x", 12)
+    .attr("dy", ".35em")
+    .style("font-size","15px")
+    .text(function(d) {return d.name; });
+
+  
+ 
+
+
+// add the curvy lines
+function tick() {
+    path.attr("d", function(d) {
+        var dx = d.target.x - d.source.x,
+            dy = d.target.y - d.source.y,
+            dr = Math.sqrt(dx * dx + dy * dy);
+        return "M" + 
+            d.source.x + "," + 
+            d.source.y + "A" + 
+            dr + "," + dr + " 0 0,1 " + 
+            d.target.x + "," + 
+            d.target.y;
+    });
+ 
+    node
+        .attr("transform", function(d) { 
+		    return "translate(" + d.x + "," + d.y + ")"; });
+}
+ 
+// action to take on mouse click
+function click() {
+    d3.select(this).select("text").transition()
+        .duration(750)
+        .attr("x", 22)
+        .style("stroke", "lightsteelblue")
+        .style("stroke-width", ".5px")
+        .style("font", "20px sans-serif");
+    d3.select(this).select("circle").transition()
+        .duration(750)
+        .attr("r", 16);
+}
+ 
+// action to take on mouse double click
+function dblclick() {
+    d3.select(this).select("circle").transition()
+        .duration(750)
+        .attr("r", 6);
+    d3.select(this).select("text").transition()
+        .duration(750)
+        .attr("x", 12)
+        .style("stroke", "none")
+        .style("fill", "black")
+        .style("stroke", "none")
+        .style("font", "10px sans-serif");
+}
+        //--------------------LEGEND-----------------------
+        
+            var legendWidth = 250;
+            var legendHeight = 250;
+            var legendFontSize=18;
+            sortedKeys=['Business Definition','Regulations','Process','Control','Risk']
+            color_hash=['red',"green","orange","blue","violet"]
+            var leftPanel = d3.select("svg").append("svg:svg")
+                .attr("width", legendWidth)
+                .attr("height", legendHeight)
+                .append("svg:g")
+                .attr("class", "focalNodeCanvas")
+                .attr("transform", "translate(" + legendWidth/2 + "," + legendHeight /2 + ")");
+            // Print Legend Title...
+            leftPanel.append("text").attr("class", "region")
+                // .text("Legend")
+                .attr("x", -1 * (legendWidth / 2 - 10))
+                .attr("y", (-legendHeight / 7 * 2))
+                .style("fill", "Black")
+                .style("font", "bold "+ (legendFontSize+2) +"px Arial")
+                .attr("text-anchor", "start");
+            
+            //Plot the bullet circles...
+            leftPanel.selectAll("focalNodeCanvas")
+                .data(sortedKeys).enter().append("svg:circle") // Append circle elements
+                .attr("cx", -1 * (legendWidth / 2 - 25))
+                .attr("cy", function(d, i) {
+                    return (i * 20 - legendHeight / 7 * 2 +20); //position of circles in the legend
+                })
+                .attr("stroke-width", ".5")
+                .style("fill", function(d, i) {
+                    return color_hash[i];
+                })
+                .attr("r", 7)
+                .attr("color_value", function(d, i) {
+                    return color_hash[i];
+                })
+                .attr("type_value", function(d, i) {
+                    return d;
+                })
+                .attr("index_value", function(d, i) {
+                    return "index-" + i;
+                })
+                .attr("class", function(d) {
+                    var str = d;
+                    var strippedString = str.replace(/ /g, "_")
+                    return "legendBullet-" + strippedString;
+                })
+                // .on('mouseover', typeMouseOver)
+                // .on("mouseout", typeMouseOut);
+
+            //Create legend text that acts as label keys...
+            leftPanel.selectAll("a.legend_link")
+                .data(sortedKeys) // Instruct to bind dataSet to text elements
+                .enter().append("svg:a") // Append legend elements
+                .append("text")
+                .attr("text-anchor", "center")
+                .attr("x", -1 * (legendWidth / 2 - 40))
+                .attr("y", function(d, i) {
+                    return (i * 20 - legendHeight / 7 * 2 + 20);
+                })
+                .attr("dx", 0)
+                .attr("dy", "4px") // Controls padding to place text in alignment with bullets
+                .text(function(d) {
+                    return d;
+                })
+                .attr("color_value", function(d, i) {
+                    return color_hash[i];
+                })
+                .attr("type_value", function(d, i) {
+                    return d;
+                })
+                .attr("index_value", function(d, i) {
+                    return "index-" + i;
+                })
+                .attr("class", function(d) {
+                    var str = d;
+                    var strippedString = str.replace(/ /g, "_")
+                    return "legendText-" + strippedString;
+                })
+                .style("fill", "Black")
+                .style("font", "normal "+legendFontSize+"px Arial")
+                // .on('mouseover', typeMouseOver)
+                // .on("mouseout", typeMouseOut);
+
+//             svgCanvas.append('defs').append('marker')
+//             .attr({
+//                 'id': 'arrowhead',
+//                 'viewBox': '-0 -5 10 10',
+//                 'refX': 25,
+//                 'refY': 0,
+//                 'orient': 'auto',
+//                 'markerWidth': 10,
+//                 'markerHeight': 10,
+//                 'xoverflow': 'visible'
+//             })
+// });
+//  
+</script>
+</body>
+</html>

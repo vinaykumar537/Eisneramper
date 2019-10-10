@@ -1,0 +1,188 @@
+<!---Loading static Files-->
+{% load static %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'Mapper/styles.css' %}" />
+<title>Business Definition</title>
+<style>
+  p label{
+    font-size:20px;
+    font-weight: bold;
+    }
+    select {
+    border: 1px solid black;
+  }
+  ul ul{
+    list-style-type:circle;
+  
+    }
+  #id_Business_Activities_0,#id_Business_Activities_1,#id_Business_Activities_2,#id_Business_Activities_3,#id_Business_Activities_4,#id_Business_Activities_5,#id_Business_Activities_6,
+  #id_Business_Activities_7,#id_Business_Activities_8,#id_Business_Activities_9,#id_Business_Activities_10,#id_Business_Activities_11,#id_Business_Activities_12,#id_Business_Activities_13,#id_Business_Activities_14,#id_Business_Activities_15,#id_Business_Activities_16,#id_Business_Activities_17
+  {
+    padding-left:10%;
+  }
+  </style>
+<body>
+<div id="page2">
+    <div id="header">
+        Business Management <span style="margin-left:74%;">Hi, {{user}} </span>
+        <a href="{% url 'logout' %}" id="logout"> Logout</a>
+       
+    </div>
+    <div id="combine">  
+      <div class="container stepbar">
+          <ul class="progressbar">
+            <li>Business</li>
+            <li>Regulations</li>
+            <li>Process</li>
+            <li>Control</li>
+            <li>Risk</li>
+            <li>Mapping</li>
+          </ul>
+      </div>
+      <div id="div2">
+          {% load crispy_forms_tags %}
+              {% block container %}
+                       <!-- Button trigger modal -->
+
+            ​
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog scrollable">
+              <div class="modal-dialog   cascading-modal" role="document">
+                <!--Content-->
+                <div class="modal-content">
+            ​
+                  <!--Modal cascading tabs-->
+                  <div class="modal-c-tabs">
+            ​
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i class="fas fa-user mr-1"></i>
+                          Businessdefinitions</a>
+                        </li>
+                    </ul>
+                  <input id="myInput" type="text" placeholder="Search.." class="search" >
+                    <!-- Tab panels --> 
+                    <div class="tab-content">
+                      <!--Panel 7-->
+                      <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
+            ​
+                        <!--Body-->
+                        <div class="modal-body mb-1">
+                          <!--Accordion wrapper-->
+            ​
+                          
+            <div class="accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+              {% for item in items %}
+              <!-- Accordion card -->
+              <div class="card">
+                  
+                <!-- Card header -->
+                <div class="card-header" role="tab" id="#c{{forloop.counter}}">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#accordionEx1_{{forloop.counter}}"
+                    aria-expanded="false" aria-controls="accordionEx1_{{forloop.counter}}">
+                    <h6 class="mb-0">
+                      {{item.businessdefinition_a}} <i class="fas fa-angle-down rotate-icon"></i>
+                    </h6>
+                  </a>
+                </div>
+            ​
+                <!-- Card body -->
+                <div id="accordionEx1_{{forloop.counter}}" class="collapse" role="tabpanel" aria-labelledby="#accordionEx1_{{forloop.counter}}"
+                  data-parent="#accordionEx1">
+                  <div class="card-body">
+                    {{item.businessdefinition}}
+                  </div>
+                </div>
+            ​
+              </div>
+            ​
+              {% endfor %}
+              <!-- Accordion card -->
+            ​
+              
+                    
+              <!-- Accordion card -->
+              <button type="button" class="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal">Close</button>
+            </div>
+                          
+                      
+                        </div>
+            ​
+                      </div>
+                      <!--/.Panel 7-->
+            ​
+                    </div>
+            ​
+                  </div>
+                </div>
+                <!--/.Content-->
+              </div>
+            </div>
+            </div>
+            <!--Modal: Login / Register Form-->
+                          <form method='post' >
+                          {% csrf_token %}
+                          {% if heading %}
+                          <h3>{{heading}}</h3>
+                          {% endif %}
+                          {% if messages %}
+            <ul>
+               {% for message in messages %}
+                 <li style="color: red">{{ message }}</li>
+               {% endfor %}
+            </ul>
+            {% endif %}
+                          <div id="predefined_ba">
+                            {{ form.as_p }}
+                            <div>
+                             
+                            </div><br>
+                            <!-- <input type='submit' id="submit" class="btn btn-primary" value='Submit'>
+                            <button type="button" id="submit" class="btn btn-primary desc" data-toggle="modal" data-target="#exampleModalLong">
+                                View Descriptions
+                              </button> -->
+                          </div>
+                       
+                      
+      </div>
+      <div id="noscroll">
+          <p style="color:crimson">To apply common mapping to all selected Ba's, please check "Group All"</p>
+          <input type="checkbox" name="groupall" value="yes">Group All</br>
+          <input type='submit' id="submit" class="btn btn-primary" value='Submit'>
+          <button type="button" id="submit" class="btn btn-primary desc" data-toggle="modal" data-target="#exampleModalLong">  View Descriptions
+        </button>
+        </form>
+                          
+        {% endblock %}
+        {% block custom_js %}
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script type="text/javascript">
+      
+        $(document).ready(function(){
+          $("#myInput").on("keypress click input", function () {
+              var val = $(this).val();
+              if(val.length) {
+                  $(".accordion .card").hide().filter(function () {
+                      return $('.mb-0', this).text().toLowerCase().indexOf(val.toLowerCase()) > -1;
+                  }).show();
+              }
+              else {
+                  $(".accordion .card").show();
+              }
+          });
+          
+          
+          //for test
+          //$("#searcher").val('us').keyup();
+        });
+        </script>
+    {% endblock %}
+      </div>
+    </div>
+    </body>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
