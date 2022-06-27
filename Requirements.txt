@@ -17,7 +17,7 @@ isort==4.3.21
 lazy-object-proxy==1.4.2
 lxml==4.4.1
 mccabe==0.6.1
-mysql-connector-python==8.0.11
+mysql-connector-python==8.0.14
 mysqlclient==1.4.4
 nltk==3.4.5
 numpy==1.17.2
